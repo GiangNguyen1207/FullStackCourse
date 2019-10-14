@@ -7,12 +7,15 @@ const OneCountry = (props) => {
     const [ loaded, setLoaded ] = useState(false)
 
     useEffect(() => {
+        let isMounted = false
         axios
-        .get(`http://api.apixu.com/v1/current.json?key=c8a7f2fccb9f4a2791f205225190608&q=${props.country.capital}`)
-        .then(response => {
+        .get(`http://api.weatherstack.com/current?access_key=335188ef8b3e043ba8a1669584216372&query=${props.country.capital}`)
+        .then((response => {
+            if(!isMounted) {
             setWeather(response.data)
-            setLoaded(true)
-        })
+            setLoaded(true)}
+        }))
+        return () => {isMounted=true}
     }, [props.country.capital])
 
     return(
@@ -35,10 +38,10 @@ const OneCountry = (props) => {
                     <img src={props.country.flag} alt="Flag" width="10%" />
                     <h2>Weather in {props.country.capital}</h2>
                         <strong>temparature: </strong>
-                            <span>{weather.current.temp_c} Celsius</span><br />
-                        <img src={weather.current.condition.icon} alt="Pic"/><br />
+                            <span>{weather.current.temperature} Celsius</span><br />
+                        <img src={weather.current.weather_icons} alt="Pic"/><br />
                         <strong>wind: </strong>
-                            <span>{weather.current.wind_kph} kph </span>
+                            <span>{weather.current.wind_speed} kph </span>
                             <span>direction {weather.current.wind_dir}</span>
                 </div>
             : null}
