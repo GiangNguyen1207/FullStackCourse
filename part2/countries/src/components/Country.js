@@ -18,7 +18,7 @@ const Country = (props) => {
     }, [props.country.capital])
 
     const buttonShow = () => {
-        setShowDetails(true)
+        setShowDetails(!showDetails)
     }
 
     return(
